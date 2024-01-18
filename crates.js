@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["grafana_plugin_sdk","grafana_plugin_sdk_macros"];
