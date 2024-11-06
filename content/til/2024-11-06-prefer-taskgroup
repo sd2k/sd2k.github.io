@@ -1,0 +1,8 @@
++++
+title = "Prefer `TaskGroup` to older primitives in Python's `asyncio`"
+date = 2024-11-06
++++
+
+Today I spent several hours (I'd rather not say how many) tracking down a bug which turned out to be caused by incorrect use of `asyncio.wait`. We chose `wait` specifically in this case because of the option to choose how to handle exceptions, but didn't notice that the return values are `set`s, not lists, and so don't reflect the order of the input coroutines. I guess we'd assumed the opposite and the rest of the code looked innocent, behaved mostly correctly most of the time, but broke in subtle ways other times.
+
+Since 3.11, Python's `asyncio` module has a `TaskGroup` class. It was probably inspired by `trio` since it has the flavour of structured concurrency. Anyway, it does everything we needed: runs multiple coroutines concurrently, allows you to maintain ordering, and has sane exception handling. If you're still using `gather`, `wait` and co, give `TaskGroup` a try.
