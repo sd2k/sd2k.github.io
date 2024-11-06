@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title></title>
+    <link rel="self" type="application/atom+xml" href="https://sd2k.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sd2k.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-11-05T22:00:00+00:00</updated>
+    <id>https://sd2k.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Modular Javascript bindings from Rust</title>
+        <published>2024-11-05T22:00:00+00:00</published>
+        <updated>2024-11-05T22:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sd2k.github.io/blog/rust-to-js/"/>
+        <id>https://sd2k.github.io/blog/rust-to-js/</id>
+        
+        <content type="html" xml:base="https://sd2k.github.io/blog/rust-to-js/">&lt;p&gt;I&#x27;ve been working on a Rust library for time series data analysis which comes with both
+Python and Javascript bindings. The Javascript bindings are generated from
+a Rust crate which belongs to the Cargo workspace, which has been OK so far, but as the
+scope of the project has grown (from just forecasting originally, to outlier detection,
+clustering, changepoint detection, and more), the size of the WASM bundle has grown to
+about 1MB, which is... not enormous, but definitely not ideal.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s particularly annoying when users only want to use a tiny fraction of the library,
+but must load the entire WASM bundle first. What I&#x27;d really like is for my JS library&#x27;s
+package.json to look something like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;@bsull&#x2F;augurs&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;version&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;0.6.0&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;files&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.wasm&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.d.ts&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;snippets&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;  ],
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;core.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;exports&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: {
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;core.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;clustering&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;clustering.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;dtw&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;dtw.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;prophet&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;prophet.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;outlier&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;outlier.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  },
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;types&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augurs.d.ts&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Users could then import the parts of the library they need like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;js&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-js &quot;&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Prophet &lt;&#x2F;span&gt;&lt;span&gt;} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;from &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;@bsull&#x2F;augurs&#x2F;prophet&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;I can think of a few ways to do this:&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-manually-split-the-js-crate-into-multiple-crates&quot;&gt;1. Manually split the JS crate into multiple crates&lt;&#x2F;h2&gt;
+&lt;p&gt;This approach appears to be the most straightforward. Rather than the
+JS crate being a single crate with each set of bindings in a module,
+we split it into multiple crates, each with a single module.
+We can then use &lt;a href=&quot;https:&#x2F;&#x2F;rustwasm.github.io&#x2F;wasm-pack&#x2F;&quot;&gt;&lt;code&gt;wasm-pack&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; with each crate to generate
+the JS bindings for that module, shove them all into a single directory,
+manually generate the &lt;code&gt;package.json&lt;&#x2F;code&gt; file, and we&#x27;re done.&lt;&#x2F;p&gt;
+&lt;p&gt;This is &lt;em&gt;fine&lt;&#x2F;em&gt;, but it&#x27;s a bit of a pain to maintain (each original Rust
+crate has to have a corresponding JS crate). Not only that but each
+WASM module is self-contained, so if a user wants to use more than one
+module, there&#x27;s a bunch of duplication in amongst them (e.g. all the WASM
+machinery, &lt;code&gt;serde&lt;&#x2F;code&gt; stuff, &lt;code&gt;tracing&lt;&#x2F;code&gt;, etc is duplicated). So the overall bundle
+size is probably larger than we started with, but if someone only wants to use
+outlier detection, they save bandwidth. Great.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;But&lt;&#x2F;strong&gt;. Not &lt;em&gt;all&lt;&#x2F;em&gt; of the modules are self contained. For example, both the
+&lt;code&gt;clustering&lt;&#x2F;code&gt; and &lt;code&gt;dtw&lt;&#x2F;code&gt; modules use a shared &lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt; type, which is
+intended to be opaque to users, returned from distance matrix calculation functions
+in &lt;code&gt;dtw&lt;&#x2F;code&gt; and consumed by clustering functions in &lt;code&gt;clustering&lt;&#x2F;code&gt;. This will only
+work if the WASM modules know how to talk to each other, which they don&#x27;t. Passing
+an object returned from one module to another isn&#x27;t possible - they each have their
+own memory space. We&#x27;d need to deserialize and reserialize the data in order to
+pass it between modules, which can be quite slow if the data is large.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s certainly an option, but it&#x27;s not perfect.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-create-a-wasm-component-for-each-piece-of-functionality&quot;&gt;2. Create a WASM component for each piece of functionality&lt;&#x2F;h2&gt;
+&lt;p&gt;This feels exactly like the &lt;a href=&quot;https:&#x2F;&#x2F;component-model.bytecodealliance.org&#x2F;&quot;&gt;WASM component model&lt;&#x2F;a&gt;&#x27;s raison d&#x27;être: allowing multiple
+core WASM modules to talk to each other. The idea would be to create
+a separate WASM component for each module, starting with an interface
+defined using &lt;a href=&quot;https:&#x2F;&#x2F;component-model.bytecodealliance.org&#x2F;design&#x2F;wit.html&quot;&gt;WIT&lt;&#x2F;a&gt;, then using &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bytecodealliance&#x2F;cargo-component&quot;&gt;&lt;code&gt;cargo-component&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; to generate the bindings
+and implementing them in Rust. These would supersede the existing JS crate;
+we could then use &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.github.io&#x2F;jco&#x2F;&quot;&gt;&lt;code&gt;jco&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; to generate the JS bindings for each component.&lt;&#x2F;p&gt;
+&lt;p&gt;The feasibility of this approach depends entirely on how &lt;code&gt;jco&lt;&#x2F;code&gt; generates the
+initialization code for the WASM modules. It&#x27;s not clear to me how it would
+know about the dependencies between the modules, and how it would handle
+the case where a module depends on another module. Ideally it&#x27;d just load exactly
+what it needs for any given module, but it&#x27;s not clear how to do that.&lt;&#x2F;p&gt;
+&lt;p&gt;For example, in the situation above, both &lt;code&gt;dtw&lt;&#x2F;code&gt; and &lt;code&gt;clustering&lt;&#x2F;code&gt; depend on
+&lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt;, but &lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt; is defined in the &lt;code&gt;core&lt;&#x2F;code&gt; module. If
+someone imports &lt;code&gt;clustering&lt;&#x2F;code&gt;, I&#x27;d want the bindings to load and instantiate
+the &lt;code&gt;core&lt;&#x2F;code&gt; and &lt;code&gt;clustering&lt;&#x2F;code&gt; modules. Then if someone imports &lt;code&gt;dtw&lt;&#x2F;code&gt;, I&#x27;d want
+the bindings to load and instantiate only the &lt;code&gt;dtw&lt;&#x2F;code&gt; module, and use the existing
+&lt;code&gt;core&lt;&#x2F;code&gt; module.&lt;&#x2F;p&gt;
+&lt;p&gt;I&#x27;ve yet to find out if this is possible, but I&#x27;ll write more about it if I do.&lt;&#x2F;p&gt;
+&lt;p&gt;One way I think it might work is by having a final wrapper WASM component which
+imports and re-exports the other components. This way, the dependency tree of the
+modules would be known to &lt;code&gt;jco&lt;&#x2F;code&gt;, so it would hopefully be able to generate
+optimal bindings. The last time I tried this, it didn&#x27;t work for two reasons:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;the initialization code generated by &lt;code&gt;jco&lt;&#x2F;code&gt; was very eager to load all of the
+WASM modules, even if they weren&#x27;t needed, which is no better than the
+approach we&#x27;re currently taking. It &lt;em&gt;is&lt;&#x2F;em&gt; possible to modify the instantiation
+code somewhat (mentioned in &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.github.io&#x2F;jco&#x2F;transpiling.html#instantiation&quot;&gt;the instantiation docs&lt;&#x2F;a&gt;)
+but I struggled to do anything meaningful here.&lt;&#x2F;li&gt;
+&lt;li&gt;the Rust bindings generated by &lt;code&gt;cargo-component&lt;&#x2F;code&gt; produced separate Rust modules
+with separate types for each interface, so I would have had to write a &lt;em&gt;ton&lt;&#x2F;em&gt;
+of boilerplate to convert types between those expected by each module.
+I asked about this on the &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.zulipchat.com&#x2F;#narrow&#x2F;channel&#x2F;409526-jco&#x2F;topic&#x2F;.E2.9C.94.20&amp;#x27;wrapper&amp;#x27;.20component.3F&quot;&gt;jco Zulip&lt;&#x2F;a&gt; and it sounded like this might
+be fixable by first defining the types in some separate shared WIT file.
+I&#x27;ll probably try that next.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;And... I think that&#x27;s it? If you know any other ways to do this, please let me know!
+My contact details are on the &lt;a href=&quot;&#x2F;about&quot;&gt;about page&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Beginning</title>
+        <published>2024-11-05T00:00:00+00:00</published>
+        <updated>2024-11-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sd2k.github.io/blog/beginning/"/>
+        <id>https://sd2k.github.io/blog/beginning/</id>
+        
+        <content type="html" xml:base="https://sd2k.github.io/blog/beginning/">&lt;p&gt;Wow, starting blogging is harder than I thought it would be. How on earth does anyone know what to write about?&lt;&#x2F;p&gt;
+&lt;p&gt;I think I&#x27;m going to start with this boring, useless post that says literally nothing. At least that breaks the spell of not writing anything. I reckon it&#x27;s very easy to agonise over this stuff until it&#x27;s perfect and never publish &lt;em&gt;anything&lt;&#x2F;em&gt;, so this is me avoiding it.&lt;&#x2F;p&gt;
+&lt;p&gt;Maybe the next post will contain something interesting!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

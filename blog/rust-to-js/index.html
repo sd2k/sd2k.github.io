@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="robots" content="index, follow">
+
+
+
+
+
+
+
+
+
+
+
+
+<title>Modular Javascript bindings from Rust</title>
+
+
+
+<meta name="title" content="Modular Javascript bindings from Rust">
+
+
+<meta name="author" content="bsull">
+
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sd2k.github.io/blog/rust-to-js/">
+
+<meta property="og:site_name" content="">
+
+
+<meta property="og:title" content="Modular Javascript bindings from Rust">
+
+
+
+
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://sd2k.github.io/blog/rust-to-js/">
+
+<meta property="twitter:title" content="Modular Javascript bindings from Rust">
+
+
+
+
+<link rel="canonical" href="https://sd2k.github.io/blog/rust-to-js/">
+
+
+
+
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://sd2k.github.io/atom.xml"> 
+
+
+
+<link rel="stylesheet" type="text/css" href="https://speyll.github.io/suCSS/reset-min.css"/>
+<link rel="stylesheet" type="text/css" href="https://speyll.github.io/suCSS/suCSS-min.css"/>
+<link rel="stylesheet" type="text/css" href="https://sd2k.github.io/css/style.css"/>
+
+<script src="https://sd2k.github.io/js/script.js" defer></script>
+
+
+</head>
+<body>
+      <header>
+          
+
+  
+
+
+  <nav id="nav-bar">
+    
+      <a href="&#x2F;" class="">
+        
+        &#x2F;home&#x2F;
+      </a>
+    
+      <a href="&#x2F;about" class="">
+        
+        &#x2F;about&#x2F;
+      </a>
+    
+      <a href="&#x2F;blog" class="">
+        
+        &#x2F;blog&#x2F;
+      </a>
+    
+      <a href="&#x2F;til" class="">
+        
+        &#x2F;til&#x2F;
+      </a>
+    
+      <a href="&#x2F;journal" class="">
+        
+        &#x2F;journal&#x2F;
+      </a>
+    
+    <div>
+      <input type="checkbox" id="theme-toggle" style="display: none;">
+      <label for="theme-toggle" id="theme-toggle-label"><svg id="theme-icon" class="icons"><use href="https://sd2k.github.io/icons.svg#lightMode"></use></svg></label>
+      <audio id="theme-sound">
+        <source src="https://sd2k.github.io/click.ogg" type="audio/ogg">
+      </audio>
+    </div>
+  </nav>
+
+
+      </header>
+      <main>
+          
+<div><a href="..">..</a>/<span class="accent-data">rust-to-js</span></div>
+<time datetime="2024-11-05T22:00:00">Published on: <span class="accent-data">2024-11-05T22:00:00</span></time>
+
+<address rel="author">By <span class="accent-data">bsull</span></address>
+
+<h1>Modular Javascript bindings from Rust</h1>
+
+
+
+<p>I've been working on a Rust library for time series data analysis which comes with both
+Python and Javascript bindings. The Javascript bindings are generated from
+a Rust crate which belongs to the Cargo workspace, which has been OK so far, but as the
+scope of the project has grown (from just forecasting originally, to outlier detection,
+clustering, changepoint detection, and more), the size of the WASM bundle has grown to
+about 1MB, which is... not enormous, but definitely not ideal.</p>
+<p>It's particularly annoying when users only want to use a tiny fraction of the library,
+but must load the entire WASM bundle first. What I'd really like is for my JS library's
+package.json to look something like this:</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">name</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">@bsull/augurs</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">version</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">0.6.0</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">files</span><span>&quot;: [
+</span><span>    &quot;</span><span style="color:#a3be8c;">*.wasm</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">*.js</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">*.d.ts</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">snippets/</span><span>&quot;
+</span><span>  ],
+</span><span>  &quot;</span><span style="color:#a3be8c;">main</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">core.js</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">exports</span><span>&quot;: {
+</span><span>    &quot;</span><span style="color:#a3be8c;">.</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">./core.js</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">./clustering</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">./clustering.js</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">./dtw</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">./dtw.js</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">./prophet</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">./prophet.js</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">./outlier</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">./outlier.js</span><span>&quot;,
+</span><span>  },
+</span><span>  &quot;</span><span style="color:#a3be8c;">types</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">augurs.d.ts</span><span>&quot;
+</span><span>}
+</span></code></pre>
+<p>Users could then import the parts of the library they need like this:</p>
+<pre data-lang="js" style="background-color:#2b303b;color:#c0c5ce;" class="language-js "><code class="language-js" data-lang="js"><span style="color:#b48ead;">import </span><span>{ </span><span style="color:#bf616a;">Prophet </span><span>} </span><span style="color:#b48ead;">from </span><span>&#39;</span><span style="color:#a3be8c;">@bsull/augurs/prophet</span><span>&#39;;
+</span></code></pre>
+<p>I can think of a few ways to do this:</p>
+<h2 id="1-manually-split-the-js-crate-into-multiple-crates">1. Manually split the JS crate into multiple crates</h2>
+<p>This approach appears to be the most straightforward. Rather than the
+JS crate being a single crate with each set of bindings in a module,
+we split it into multiple crates, each with a single module.
+We can then use <a href="https://rustwasm.github.io/wasm-pack/"><code>wasm-pack</code></a> with each crate to generate
+the JS bindings for that module, shove them all into a single directory,
+manually generate the <code>package.json</code> file, and we're done.</p>
+<p>This is <em>fine</em>, but it's a bit of a pain to maintain (each original Rust
+crate has to have a corresponding JS crate). Not only that but each
+WASM module is self-contained, so if a user wants to use more than one
+module, there's a bunch of duplication in amongst them (e.g. all the WASM
+machinery, <code>serde</code> stuff, <code>tracing</code>, etc is duplicated). So the overall bundle
+size is probably larger than we started with, but if someone only wants to use
+outlier detection, they save bandwidth. Great.</p>
+<p><strong>But</strong>. Not <em>all</em> of the modules are self contained. For example, both the
+<code>clustering</code> and <code>dtw</code> modules use a shared <code>DistanceMatrix</code> type, which is
+intended to be opaque to users, returned from distance matrix calculation functions
+in <code>dtw</code> and consumed by clustering functions in <code>clustering</code>. This will only
+work if the WASM modules know how to talk to each other, which they don't. Passing
+an object returned from one module to another isn't possible - they each have their
+own memory space. We'd need to deserialize and reserialize the data in order to
+pass it between modules, which can be quite slow if the data is large.</p>
+<p>It's certainly an option, but it's not perfect.</p>
+<h2 id="2-create-a-wasm-component-for-each-piece-of-functionality">2. Create a WASM component for each piece of functionality</h2>
+<p>This feels exactly like the <a href="https://component-model.bytecodealliance.org/">WASM component model</a>'s raison d'être: allowing multiple
+core WASM modules to talk to each other. The idea would be to create
+a separate WASM component for each module, starting with an interface
+defined using <a href="https://component-model.bytecodealliance.org/design/wit.html">WIT</a>, then using <a href="https://github.com/bytecodealliance/cargo-component"><code>cargo-component</code></a> to generate the bindings
+and implementing them in Rust. These would supersede the existing JS crate;
+we could then use <a href="https://bytecodealliance.github.io/jco/"><code>jco</code></a> to generate the JS bindings for each component.</p>
+<p>The feasibility of this approach depends entirely on how <code>jco</code> generates the
+initialization code for the WASM modules. It's not clear to me how it would
+know about the dependencies between the modules, and how it would handle
+the case where a module depends on another module. Ideally it'd just load exactly
+what it needs for any given module, but it's not clear how to do that.</p>
+<p>For example, in the situation above, both <code>dtw</code> and <code>clustering</code> depend on
+<code>DistanceMatrix</code>, but <code>DistanceMatrix</code> is defined in the <code>core</code> module. If
+someone imports <code>clustering</code>, I'd want the bindings to load and instantiate
+the <code>core</code> and <code>clustering</code> modules. Then if someone imports <code>dtw</code>, I'd want
+the bindings to load and instantiate only the <code>dtw</code> module, and use the existing
+<code>core</code> module.</p>
+<p>I've yet to find out if this is possible, but I'll write more about it if I do.</p>
+<p>One way I think it might work is by having a final wrapper WASM component which
+imports and re-exports the other components. This way, the dependency tree of the
+modules would be known to <code>jco</code>, so it would hopefully be able to generate
+optimal bindings. The last time I tried this, it didn't work for two reasons:</p>
+<ul>
+<li>the initialization code generated by <code>jco</code> was very eager to load all of the
+WASM modules, even if they weren't needed, which is no better than the
+approach we're currently taking. It <em>is</em> possible to modify the instantiation
+code somewhat (mentioned in <a href="https://bytecodealliance.github.io/jco/transpiling.html#instantiation">the instantiation docs</a>)
+but I struggled to do anything meaningful here.</li>
+<li>the Rust bindings generated by <code>cargo-component</code> produced separate Rust modules
+with separate types for each interface, so I would have had to write a <em>ton</em>
+of boilerplate to convert types between those expected by each module.
+I asked about this on the <a href="https://bytecodealliance.zulipchat.com/#narrow/channel/409526-jco/topic/.E2.9C.94.20&#x27;wrapper&#x27;.20component.3F">jco Zulip</a> and it sounded like this might
+be fixable by first defining the types in some separate shared WIT file.
+I'll probably try that next.</li>
+</ul>
+<hr />
+<p>And... I think that's it? If you know any other ways to do this, please let me know!
+My contact details are on the <a href="/about">about page</a>.</p>
+
+
+<p class="tags-data">
+  
+</p>
+
+      </main>
+      <footer>
+          <hr>
+<div id="footer-container">
+  
+  <div>
+    <p>Theme and color theme licensed under <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Licence_MIT">MIT</a>.<br>
+      Built with <a target="_blank" rel="noopener noreferrer" href="https://www.getzola.org">Zola</a> using <a target="_blank" rel="noopener noreferrer" href="https://github.com/Speyll/anemone">anemone</a> theme, <a target="_blank" rel="noopener noreferrer" href="https://speyll.github.io/suCSS/">suCSS</a> framework &amp; <a target="_blank" rel="noopener noreferrer" href="https://github.com/Speyll/veqev">veqev</a>.<br>
+    </p>
+
+  </div>
+  
+  <div>
+    <a class="no-style" target="_blank" rel="noopener noreferrer" href="https://sd2k.github.io/atom.xml" title="Subscribe via RSS for updates."><svg class="icons"><use href="https://sd2k.github.io/icons.svg#rss"></use></svg></a>
+  </div>
+  
+</div>
+
+      </footer>
+</body>
+</html>
