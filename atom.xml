@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title></title>
+    <link rel="self" type="application/atom+xml" href="https://sd2k.github.io/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://sd2k.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-11-18T00:00:00+00:00</updated>
+    <id>https://sd2k.github.io/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Announcing augurs - a time series toolkit for Rust</title>
+        <published>2024-11-18T00:00:00+00:00</published>
+        <updated>2024-11-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sd2k.github.io/blog/announcing-augurs/"/>
+        <id>https://sd2k.github.io/blog/announcing-augurs/</id>
+        
+        <content type="html" xml:base="https://sd2k.github.io/blog/announcing-augurs/">&lt;p&gt;I&#x27;m excited to announce &lt;a href=&quot;https:&#x2F;&#x2F;augu.rs&quot;&gt;&lt;code&gt;augurs&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;, a time series toolkit for Rust.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;augurs&lt;&#x2F;code&gt; is a collection of crates that provide a set of tools for working with time series data.
+Functionality includes:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;forecaster&#x2F;index.html&quot;&gt;forecasting&lt;&#x2F;a&gt; using &lt;a href=&quot;https:&#x2F;&#x2F;otexts.com&#x2F;fpp3&#x2F;expsmooth.html&quot;&gt;exponential smoothing&lt;&#x2F;a&gt; (ETS), &lt;a href=&quot;https:&#x2F;&#x2F;robjhyndman.com&#x2F;publications&#x2F;mstl&#x2F;&quot;&gt;multiple seasonal decomposition&lt;&#x2F;a&gt; (MSTL) and &lt;a href=&quot;https:&#x2F;&#x2F;facebook.github.io&#x2F;prophet&#x2F;&quot;&gt;Prophet&lt;&#x2F;a&gt; models&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;outlier&#x2F;index.html&quot;&gt;outlier detection&lt;&#x2F;a&gt; using &lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;DBSCAN&quot;&gt;DBSCAN&lt;&#x2F;a&gt; and &lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Median_absolute_deviation&quot;&gt;median absolute deviation&lt;&#x2F;a&gt; (MAD) algorithms&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;dtw&#x2F;index.html&quot;&gt;dynamic time warping&lt;&#x2F;a&gt; (&lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Dynamic_time_warping&quot;&gt;DTW&lt;&#x2F;a&gt;) for distance and distance matrix calculations&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;clustering&#x2F;index.html&quot;&gt;time series clustering&lt;&#x2F;a&gt; using &lt;a href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;DBSCAN&quot;&gt;DBSCAN&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;seasons&#x2F;index.html&quot;&gt;seasonality detection&lt;&#x2F;a&gt; using &lt;a href=&quot;https:&#x2F;&#x2F;www.sktime.net&#x2F;en&#x2F;stable&#x2F;api_reference&#x2F;auto_generated&#x2F;sktime.param_est.seasonality.SeasonalityPeriodogram.html&quot;&gt;periodograms&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;It&#x27;s still a work in progress, but I think it&#x27;s about time it was shared with the world.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;demo.augu.rs&quot;&gt;Take a look at the demo&lt;&#x2F;a&gt; to see what you can do!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-is-a-time-series&quot;&gt;What is a time series?&lt;&#x2F;h2&gt;
+&lt;p&gt;A time series is a sequence of data points indexed by time. Imagine a series of temperature readings taken every hour for a year.
+The data points are indexed by the time of the reading, and the values are the temperature at that time.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-might-you-use-this&quot;&gt;Why might you use this?&lt;&#x2F;h2&gt;
+&lt;p&gt;Time series data is everywhere, and while there are tons of tools for working with it in Python or R, there&#x27;s not a whole lot available in Rust.&lt;&#x2F;p&gt;
+&lt;p&gt;This crate is designed to fill that gap, as well as provide bindings for other languages (currently Javascript and Python)
+to make it easier to use in environments like the web.&lt;&#x2F;p&gt;
+&lt;p&gt;There are lots of real world use cases for time series data. Here are a few examples:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;projecting data into the future for planning
+e.g. predicting future temperature or sales data for planning&lt;&#x2F;li&gt;
+&lt;li&gt;detecting &lt;em&gt;anomalies&lt;&#x2F;em&gt; (when time series don&#x27;t behave as expected) so you can be alerted
+&lt;ul&gt;
+&lt;li&gt;e.g. you have a sensor which emits temperature readings every minute, and you want to know
+when the temperature is unusually high or low&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;finding &lt;em&gt;outliers&lt;&#x2F;em&gt; (when one time series is much different from the rest)
+&lt;ul&gt;
+&lt;li&gt;e.g. you have a Kubernetes &lt;code&gt;ReplicaSet&lt;&#x2F;code&gt; emitting metrics from each pod and you want to know
+when one pod is misbehaving&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;finding groups of series which behave similarly&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;All of this is doable in &lt;code&gt;augurs&lt;&#x2F;code&gt;!&lt;&#x2F;p&gt;
+&lt;p&gt;Also, anecdotally it feels faster than other implementations of the same algorithms. There are some benchmarks in the repository, but they don&#x27;t
+compare to other implementations - they&#x27;re mainly just to make sure it&#x27;s fast enough and to help with profiling. If anyone is interested in comparing
+to other implementations (e.g. &lt;code&gt;statsforecast&lt;&#x2F;code&gt; or R, on which some of augurs&#x27; implementations are based), I&#x27;d be happy to add them to the benchmarks.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-is-it-called-augurs&quot;&gt;Why is it called augurs?&lt;&#x2F;h2&gt;
+&lt;p&gt;The word &lt;a href=&quot;https:&#x2F;&#x2F;www.collinsdictionary.com&#x2F;dictionary&#x2F;english&#x2F;augur&quot;&gt;augur&lt;&#x2F;a&gt; can mean &#x27;to predict&#x27;, and I initially only intended the project to contain forecasting functionality, so it was pretty ideal. Plus the &lt;a href=&quot;https:&#x2F;&#x2F;augu.rs&quot;&gt;augu.rs&lt;&#x2F;a&gt; domain was available and it was too good a chance to pass up!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;how-do-i-use-it&quot;&gt;How do I use it?&lt;&#x2F;h2&gt;
+&lt;p&gt;The best way to get started is to look at the &lt;a href=&quot;https:&#x2F;&#x2F;augu.rs&quot;&gt;documentation&lt;&#x2F;a&gt;. The &lt;a href=&quot;https:&#x2F;&#x2F;docs.rs&#x2F;augurs&#x2F;latest&#x2F;augurs&#x2F;&quot;&gt;Rust API docs&lt;&#x2F;a&gt;) are also fairly thorough, but unfortunately the
+same can&#x27;t yet be said of the [Javascript][npm] or [Python][pypi] bindings. Watch this space!&lt;&#x2F;p&gt;
+&lt;p&gt;Here&#x27;s a quick example of how you might use &lt;code&gt;augurs&lt;&#x2F;code&gt; for in-sample forecasting with the Prophet model:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-rust &quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;use &lt;&#x2F;span&gt;&lt;span&gt;augurs::prophet::{wasmstan::WasmstanOptimizer, Prophet, TrainingData};
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Define the training data.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; ds = vec![
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1704067200&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1704871384&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1705675569&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1706479753&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1707283938&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1708088123&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1708892307&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1709696492&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1710500676&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1711304861&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1712109046&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1712913230&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1713717415&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;];
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; y = vec![
+&lt;&#x2F;span&gt;&lt;span&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;1.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;2.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;3.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;4.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;5.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;6.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;7.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;8.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;9.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;10.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;11.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;12.0&lt;&#x2F;span&gt;&lt;span&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;13.0&lt;&#x2F;span&gt;&lt;span&gt;,
+&lt;&#x2F;span&gt;&lt;span&gt;];
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; data = TrainingData::new(ds, y.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;clone&lt;&#x2F;span&gt;&lt;span&gt;())?;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Create an optimizer. This one uses Stan compiled to WASM!
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; wasmstan = WasmstanOptimizer::new();
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Create our model.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let mut&lt;&#x2F;span&gt;&lt;span&gt; prophet = Prophet::new(Default::default(), wasmstan);
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Fit the model. We could provide other optimization options if we wanted.
+&lt;&#x2F;span&gt;&lt;span&gt;prophet.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;fit&lt;&#x2F;span&gt;&lt;span&gt;(data, Default::default())?;
+&lt;&#x2F;span&gt;&lt;span&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; Get in-sample predictions.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#65737e;&quot;&gt;&#x2F;&#x2F; We could get out-of-sample predictions too by passing a `PredictionData` instead of `None`.
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; predictions = prophet.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#96b5b4;&quot;&gt;predict&lt;&#x2F;span&gt;&lt;span&gt;(None)?;
+&lt;&#x2F;span&gt;&lt;span&gt;println!(&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;Predicted values: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#d08770;&quot;&gt;{:#?}&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;, predictions.yhat);
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;If you&#x27;re interested in contributing, the &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;grafana&#x2F;augurs&quot;&gt;GitHub&lt;&#x2F;a&gt; repository is the best place to start. Feature requests and bug reports are also welcome!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Modular Javascript bindings from Rust</title>
+        <published>2024-11-05T22:00:00+00:00</published>
+        <updated>2024-11-05T22:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sd2k.github.io/blog/rust-to-js/"/>
+        <id>https://sd2k.github.io/blog/rust-to-js/</id>
+        
+        <content type="html" xml:base="https://sd2k.github.io/blog/rust-to-js/">&lt;p&gt;I&#x27;ve been working on a Rust library for time series data analysis which comes with both
+Python and Javascript bindings. The Javascript bindings are generated from
+a Rust crate which belongs to the Cargo workspace, which has been OK so far, but as the
+scope of the project has grown (from just forecasting originally, to outlier detection,
+clustering, changepoint detection, and more), the size of the WASM bundle has grown to
+about 1MB, which is... not enormous, but definitely not ideal.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s particularly annoying when users only want to use a tiny fraction of the library,
+but must load the entire WASM bundle first. What I&#x27;d really like is for my JS library&#x27;s
+package.json to look something like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;json&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-json &quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span&gt;{
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;name&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;@bsull&#x2F;augurs&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;version&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;0.6.0&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;files&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: [
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.wasm&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;*.d.ts&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;snippets&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;  ],
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;main&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;core.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;exports&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: {
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;core.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;clustering&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;clustering.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;dtw&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;dtw.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;prophet&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;prophet.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;    &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;outlier&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;.&#x2F;outlier.js&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;,
+&lt;&#x2F;span&gt;&lt;span&gt;  },
+&lt;&#x2F;span&gt;&lt;span&gt;  &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;types&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;: &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;augurs.d.ts&lt;&#x2F;span&gt;&lt;span&gt;&amp;quot;
+&lt;&#x2F;span&gt;&lt;span&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Users could then import the parts of the library they need like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;js&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-js &quot;&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span&gt;{ &lt;&#x2F;span&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;Prophet &lt;&#x2F;span&gt;&lt;span&gt;} &lt;&#x2F;span&gt;&lt;span style=&quot;color:#b48ead;&quot;&gt;from &lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#a3be8c;&quot;&gt;@bsull&#x2F;augurs&#x2F;prophet&lt;&#x2F;span&gt;&lt;span&gt;&amp;#39;;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;I can think of a few ways to do this:&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-manually-split-the-js-crate-into-multiple-crates&quot;&gt;1. Manually split the JS crate into multiple crates&lt;&#x2F;h2&gt;
+&lt;p&gt;This approach appears to be the most straightforward. Rather than the
+JS crate being a single crate with each set of bindings in a module,
+we split it into multiple crates, each with a single module.
+We can then use &lt;a href=&quot;https:&#x2F;&#x2F;rustwasm.github.io&#x2F;wasm-pack&#x2F;&quot;&gt;&lt;code&gt;wasm-pack&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; with each crate to generate
+the JS bindings for that module, shove them all into a single directory,
+manually generate the &lt;code&gt;package.json&lt;&#x2F;code&gt; file, and we&#x27;re done.&lt;&#x2F;p&gt;
+&lt;p&gt;This is &lt;em&gt;fine&lt;&#x2F;em&gt;, but it&#x27;s a bit of a pain to maintain (each original Rust
+crate has to have a corresponding JS crate). Not only that but each
+WASM module is self-contained, so if a user wants to use more than one
+module, there&#x27;s a bunch of duplication in amongst them (e.g. all the WASM
+machinery, &lt;code&gt;serde&lt;&#x2F;code&gt; stuff, &lt;code&gt;tracing&lt;&#x2F;code&gt;, etc is duplicated). So the overall bundle
+size is probably larger than we started with, but if someone only wants to use
+outlier detection, they save bandwidth. Great.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;But&lt;&#x2F;strong&gt;. Not &lt;em&gt;all&lt;&#x2F;em&gt; of the modules are self contained. For example, both the
+&lt;code&gt;clustering&lt;&#x2F;code&gt; and &lt;code&gt;dtw&lt;&#x2F;code&gt; modules use a shared &lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt; type, which is
+intended to be opaque to users, returned from distance matrix calculation functions
+in &lt;code&gt;dtw&lt;&#x2F;code&gt; and consumed by clustering functions in &lt;code&gt;clustering&lt;&#x2F;code&gt;. This will only
+work if the WASM modules know how to talk to each other, which they don&#x27;t. Passing
+an object returned from one module to another isn&#x27;t possible - they each have their
+own memory space. We&#x27;d need to deserialize and reserialize the data in order to
+pass it between modules, which can be quite slow if the data is large.&lt;&#x2F;p&gt;
+&lt;p&gt;It&#x27;s certainly an option, but it&#x27;s not perfect.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-create-a-wasm-component-for-each-piece-of-functionality&quot;&gt;2. Create a WASM component for each piece of functionality&lt;&#x2F;h2&gt;
+&lt;p&gt;This feels exactly like the &lt;a href=&quot;https:&#x2F;&#x2F;component-model.bytecodealliance.org&#x2F;&quot;&gt;WASM component model&lt;&#x2F;a&gt;&#x27;s raison d&#x27;être: allowing multiple
+core WASM modules to talk to each other. The idea would be to create
+a separate WASM component for each module, starting with an interface
+defined using &lt;a href=&quot;https:&#x2F;&#x2F;component-model.bytecodealliance.org&#x2F;design&#x2F;wit.html&quot;&gt;WIT&lt;&#x2F;a&gt;, then using &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bytecodealliance&#x2F;cargo-component&quot;&gt;&lt;code&gt;cargo-component&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; to generate the bindings
+and implementing them in Rust. These would supersede the existing JS crate;
+we could then use &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.github.io&#x2F;jco&#x2F;&quot;&gt;&lt;code&gt;jco&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; to generate the JS bindings for each component.&lt;&#x2F;p&gt;
+&lt;p&gt;The feasibility of this approach depends entirely on how &lt;code&gt;jco&lt;&#x2F;code&gt; generates the
+initialization code for the WASM modules. It&#x27;s not clear to me how it would
+know about the dependencies between the modules, and how it would handle
+the case where a module depends on another module. Ideally it&#x27;d just load exactly
+what it needs for any given module, but it&#x27;s not clear how to do that.&lt;&#x2F;p&gt;
+&lt;p&gt;For example, in the situation above, both &lt;code&gt;dtw&lt;&#x2F;code&gt; and &lt;code&gt;clustering&lt;&#x2F;code&gt; depend on
+&lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt;, but &lt;code&gt;DistanceMatrix&lt;&#x2F;code&gt; is defined in the &lt;code&gt;core&lt;&#x2F;code&gt; module. If
+someone imports &lt;code&gt;clustering&lt;&#x2F;code&gt;, I&#x27;d want the bindings to load and instantiate
+the &lt;code&gt;core&lt;&#x2F;code&gt; and &lt;code&gt;clustering&lt;&#x2F;code&gt; modules. Then if someone imports &lt;code&gt;dtw&lt;&#x2F;code&gt;, I&#x27;d want
+the bindings to load and instantiate only the &lt;code&gt;dtw&lt;&#x2F;code&gt; module, and use the existing
+&lt;code&gt;core&lt;&#x2F;code&gt; module.&lt;&#x2F;p&gt;
+&lt;p&gt;I&#x27;ve yet to find out if this is possible, but I&#x27;ll write more about it if I do.&lt;&#x2F;p&gt;
+&lt;p&gt;One way I think it might work is by having a final wrapper WASM component which
+imports and re-exports the other components. This way, the dependency tree of the
+modules would be known to &lt;code&gt;jco&lt;&#x2F;code&gt;, so it would hopefully be able to generate
+optimal bindings. The last time I tried this, it didn&#x27;t work for two reasons:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;the initialization code generated by &lt;code&gt;jco&lt;&#x2F;code&gt; was very eager to load all of the
+WASM modules, even if they weren&#x27;t needed, which is no better than the
+approach we&#x27;re currently taking. It &lt;em&gt;is&lt;&#x2F;em&gt; possible to modify the instantiation
+code somewhat (mentioned in &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.github.io&#x2F;jco&#x2F;transpiling.html#instantiation&quot;&gt;the instantiation docs&lt;&#x2F;a&gt;)
+but I struggled to do anything meaningful here.&lt;&#x2F;li&gt;
+&lt;li&gt;the Rust bindings generated by &lt;code&gt;cargo-component&lt;&#x2F;code&gt; produced separate Rust modules
+with separate types for each interface, so I would have had to write a &lt;em&gt;ton&lt;&#x2F;em&gt;
+of boilerplate to convert types between those expected by each module.
+I asked about this on the &lt;a href=&quot;https:&#x2F;&#x2F;bytecodealliance.zulipchat.com&#x2F;#narrow&#x2F;channel&#x2F;409526-jco&#x2F;topic&#x2F;.E2.9C.94.20&amp;#x27;wrapper&amp;#x27;.20component.3F&quot;&gt;jco Zulip&lt;&#x2F;a&gt; and it sounded like this might
+be fixable by first defining the types in some separate shared WIT file.
+I&#x27;ll probably try that next.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;p&gt;And... I think that&#x27;s it? If you know any other ways to do this, please let me know!
+My contact details are on the &lt;a href=&quot;&#x2F;about&quot;&gt;about page&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Beginning</title>
+        <published>2024-11-05T00:00:00+00:00</published>
+        <updated>2024-11-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://sd2k.github.io/blog/beginning/"/>
+        <id>https://sd2k.github.io/blog/beginning/</id>
+        
+        <content type="html" xml:base="https://sd2k.github.io/blog/beginning/">&lt;p&gt;Wow, starting blogging is harder than I thought it would be. How on earth does anyone know what to write about?&lt;&#x2F;p&gt;
+&lt;p&gt;I think I&#x27;m going to start with this boring, useless post that says literally nothing. At least that breaks the spell of not writing anything. I reckon it&#x27;s very easy to agonise over this stuff until it&#x27;s perfect and never publish &lt;em&gt;anything&lt;&#x2F;em&gt;, so this is me avoiding it.&lt;&#x2F;p&gt;
+&lt;p&gt;Maybe the next post will contain something interesting!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="robots" content="index, follow">
+
+
+
+
+
+
+
+
+
+
+
+
+<title>Announcing augurs - a time series toolkit for Rust</title>
+
+
+
+<meta name="title" content="Announcing augurs - a time series toolkit for Rust">
+
+
+<meta name="author" content="bsull">
+
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sd2k.github.io/blog/announcing-augurs/">
+
+<meta property="og:site_name" content="">
+
+
+<meta property="og:title" content="Announcing augurs - a time series toolkit for Rust">
+
+
+
+
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://sd2k.github.io/blog/announcing-augurs/">
+
+<meta property="twitter:title" content="Announcing augurs - a time series toolkit for Rust">
+
+
+
+
+<link rel="canonical" href="https://sd2k.github.io/blog/announcing-augurs/">
+
+
+
+
+<link rel="alternate" type="application/atom+xml" title="RSS" href="https://sd2k.github.io/atom.xml"> 
+
+
+
+<link rel="stylesheet" type="text/css" href="https://speyll.github.io/suCSS/reset-min.css"/>
+<link rel="stylesheet" type="text/css" href="https://speyll.github.io/suCSS/suCSS-min.css"/>
+<link rel="stylesheet" type="text/css" href="https://sd2k.github.io/css/style.css"/>
+
+<script src="https://sd2k.github.io/js/script.js" defer></script>
+
+
+</head>
+<body>
+      <header>
+          
+
+  
+
+
+  <nav id="nav-bar">
+    
+      <a href="&#x2F;" class="">
+        
+        &#x2F;home&#x2F;
+      </a>
+    
+      <a href="&#x2F;about" class="">
+        
+        &#x2F;about&#x2F;
+      </a>
+    
+      <a href="&#x2F;blog" class="">
+        
+        &#x2F;blog&#x2F;
+      </a>
+    
+      <a href="&#x2F;til" class="">
+        
+        &#x2F;til&#x2F;
+      </a>
+    
+      <a href="&#x2F;journal" class="">
+        
+        &#x2F;journal&#x2F;
+      </a>
+    
+    <div>
+      <input type="checkbox" id="theme-toggle" style="display: none;">
+      <label for="theme-toggle" id="theme-toggle-label"><svg id="theme-icon" class="icons"><use href="https://sd2k.github.io/icons.svg#lightMode"></use></svg></label>
+      <audio id="theme-sound">
+        <source src="https://sd2k.github.io/click.ogg" type="audio/ogg">
+      </audio>
+    </div>
+  </nav>
+
+
+      </header>
+      <main>
+          
+<div><a href="..">..</a>/<span class="accent-data">announcing-augurs</span></div>
+<time datetime="2024-11-18">Published on: <span class="accent-data">2024-11-18</span></time>
+
+<address rel="author">By <span class="accent-data">bsull</span></address>
+
+<h1>Announcing augurs - a time series toolkit for Rust</h1>
+
+
+
+<p>I'm excited to announce <a href="https://augu.rs"><code>augurs</code></a>, a time series toolkit for Rust.</p>
+<p><code>augurs</code> is a collection of crates that provide a set of tools for working with time series data.
+Functionality includes:</p>
+<ul>
+<li><a href="https://docs.rs/augurs/latest/augurs/forecaster/index.html">forecasting</a> using <a href="https://otexts.com/fpp3/expsmooth.html">exponential smoothing</a> (ETS), <a href="https://robjhyndman.com/publications/mstl/">multiple seasonal decomposition</a> (MSTL) and <a href="https://facebook.github.io/prophet/">Prophet</a> models</li>
+<li><a href="https://docs.rs/augurs/latest/augurs/outlier/index.html">outlier detection</a> using <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a> and <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">median absolute deviation</a> (MAD) algorithms</li>
+<li><a href="https://docs.rs/augurs/latest/augurs/dtw/index.html">dynamic time warping</a> (<a href="https://en.wikipedia.org/wiki/Dynamic_time_warping">DTW</a>) for distance and distance matrix calculations</li>
+<li><a href="https://docs.rs/augurs/latest/augurs/clustering/index.html">time series clustering</a> using <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN</a></li>
+<li><a href="https://docs.rs/augurs/latest/augurs/seasons/index.html">seasonality detection</a> using <a href="https://www.sktime.net/en/stable/api_reference/auto_generated/sktime.param_est.seasonality.SeasonalityPeriodogram.html">periodograms</a></li>
+</ul>
+<p>It's still a work in progress, but I think it's about time it was shared with the world.</p>
+<p><a href="https://demo.augu.rs">Take a look at the demo</a> to see what you can do!</p>
+<h2 id="what-is-a-time-series">What is a time series?</h2>
+<p>A time series is a sequence of data points indexed by time. Imagine a series of temperature readings taken every hour for a year.
+The data points are indexed by the time of the reading, and the values are the temperature at that time.</p>
+<h2 id="why-might-you-use-this">Why might you use this?</h2>
+<p>Time series data is everywhere, and while there are tons of tools for working with it in Python or R, there's not a whole lot available in Rust.</p>
+<p>This crate is designed to fill that gap, as well as provide bindings for other languages (currently Javascript and Python)
+to make it easier to use in environments like the web.</p>
+<p>There are lots of real world use cases for time series data. Here are a few examples:</p>
+<ul>
+<li>projecting data into the future for planning
+e.g. predicting future temperature or sales data for planning</li>
+<li>detecting <em>anomalies</em> (when time series don't behave as expected) so you can be alerted
+<ul>
+<li>e.g. you have a sensor which emits temperature readings every minute, and you want to know
+when the temperature is unusually high or low</li>
+</ul>
+</li>
+<li>finding <em>outliers</em> (when one time series is much different from the rest)
+<ul>
+<li>e.g. you have a Kubernetes <code>ReplicaSet</code> emitting metrics from each pod and you want to know
+when one pod is misbehaving</li>
+</ul>
+</li>
+<li>finding groups of series which behave similarly</li>
+</ul>
+<p>All of this is doable in <code>augurs</code>!</p>
+<p>Also, anecdotally it feels faster than other implementations of the same algorithms. There are some benchmarks in the repository, but they don't
+compare to other implementations - they're mainly just to make sure it's fast enough and to help with profiling. If anyone is interested in comparing
+to other implementations (e.g. <code>statsforecast</code> or R, on which some of augurs' implementations are based), I'd be happy to add them to the benchmarks.</p>
+<h2 id="why-is-it-called-augurs">Why is it called augurs?</h2>
+<p>The word <a href="https://www.collinsdictionary.com/dictionary/english/augur">augur</a> can mean 'to predict', and I initially only intended the project to contain forecasting functionality, so it was pretty ideal. Plus the <a href="https://augu.rs">augu.rs</a> domain was available and it was too good a chance to pass up!</p>
+<h2 id="how-do-i-use-it">How do I use it?</h2>
+<p>The best way to get started is to look at the <a href="https://augu.rs">documentation</a>. The <a href="https://docs.rs/augurs/latest/augurs/">Rust API docs</a>) are also fairly thorough, but unfortunately the
+same can't yet be said of the [Javascript][npm] or [Python][pypi] bindings. Watch this space!</p>
+<p>Here's a quick example of how you might use <code>augurs</code> for in-sample forecasting with the Prophet model:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>augurs::prophet::{wasmstan::WasmstanOptimizer, Prophet, TrainingData};
+</span><span>
+</span><span style="color:#65737e;">// Define the training data.
+</span><span style="color:#b48ead;">let</span><span> ds = vec![
+</span><span>    </span><span style="color:#d08770;">1704067200</span><span>, </span><span style="color:#d08770;">1704871384</span><span>, </span><span style="color:#d08770;">1705675569</span><span>, </span><span style="color:#d08770;">1706479753</span><span>, </span><span style="color:#d08770;">1707283938</span><span>, </span><span style="color:#d08770;">1708088123</span><span>, </span><span style="color:#d08770;">1708892307</span><span>,
+</span><span>    </span><span style="color:#d08770;">1709696492</span><span>, </span><span style="color:#d08770;">1710500676</span><span>, </span><span style="color:#d08770;">1711304861</span><span>, </span><span style="color:#d08770;">1712109046</span><span>, </span><span style="color:#d08770;">1712913230</span><span>, </span><span style="color:#d08770;">1713717415</span><span>,
+</span><span>];
+</span><span style="color:#b48ead;">let</span><span> y = vec![
+</span><span>    </span><span style="color:#d08770;">1.0</span><span>, </span><span style="color:#d08770;">2.0</span><span>, </span><span style="color:#d08770;">3.0</span><span>, </span><span style="color:#d08770;">4.0</span><span>, </span><span style="color:#d08770;">5.0</span><span>, </span><span style="color:#d08770;">6.0</span><span>, </span><span style="color:#d08770;">7.0</span><span>, </span><span style="color:#d08770;">8.0</span><span>, </span><span style="color:#d08770;">9.0</span><span>, </span><span style="color:#d08770;">10.0</span><span>, </span><span style="color:#d08770;">11.0</span><span>, </span><span style="color:#d08770;">12.0</span><span>, </span><span style="color:#d08770;">13.0</span><span>,
+</span><span>];
+</span><span style="color:#b48ead;">let</span><span> data = TrainingData::new(ds, y.</span><span style="color:#96b5b4;">clone</span><span>())?;
+</span><span>
+</span><span style="color:#65737e;">// Create an optimizer. This one uses Stan compiled to WASM!
+</span><span style="color:#b48ead;">let</span><span> wasmstan = WasmstanOptimizer::new();
+</span><span style="color:#65737e;">// Create our model.
+</span><span style="color:#b48ead;">let mut</span><span> prophet = Prophet::new(Default::default(), wasmstan);
+</span><span style="color:#65737e;">// Fit the model. We could provide other optimization options if we wanted.
+</span><span>prophet.</span><span style="color:#96b5b4;">fit</span><span>(data, Default::default())?;
+</span><span>
+</span><span style="color:#65737e;">// Get in-sample predictions.
+</span><span style="color:#65737e;">// We could get out-of-sample predictions too by passing a `PredictionData` instead of `None`.
+</span><span style="color:#b48ead;">let</span><span> predictions = prophet.</span><span style="color:#96b5b4;">predict</span><span>(None)?;
+</span><span>println!(&quot;</span><span style="color:#a3be8c;">Predicted values: </span><span style="color:#d08770;">{:#?}</span><span>&quot;, predictions.yhat);
+</span></code></pre>
+<p>If you're interested in contributing, the <a href="https://github.com/grafana/augurs">GitHub</a> repository is the best place to start. Feature requests and bug reports are also welcome!</p>
+
+
+<p class="tags-data">
+  
+</p>
+
+      </main>
+      <footer>
+          <hr>
+<div id="footer-container">
+  
+  <div>
+    <p>Theme and color theme licensed under <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Licence_MIT">MIT</a>.<br>
+      Built with <a target="_blank" rel="noopener noreferrer" href="https://www.getzola.org">Zola</a> using <a target="_blank" rel="noopener noreferrer" href="https://github.com/Speyll/anemone">anemone</a> theme, <a target="_blank" rel="noopener noreferrer" href="https://speyll.github.io/suCSS/">suCSS</a> framework &amp; <a target="_blank" rel="noopener noreferrer" href="https://github.com/Speyll/veqev">veqev</a>.<br>
+    </p>
+
+  </div>
+  
+  <div>
+    <a class="no-style" target="_blank" rel="noopener noreferrer" href="https://sd2k.github.io/atom.xml" title="Subscribe via RSS for updates."><svg class="icons"><use href="https://sd2k.github.io/icons.svg#rss"></use></svg></a>
+  </div>
+  
+</div>
+
+      </footer>
+</body>
+</html>
